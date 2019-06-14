@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Button, View, Text } from "react-native";
 import { withNotificationService } from "../../services/Notification-Service";
 import Count from "./Count";
@@ -23,11 +22,11 @@ class HomeScreen extends React.Component {
         data: {
             key1: 'value1',
             key2: 'value2',
-        },        
+        },
     }
 
     componentDidMount() {
-        this._do();        
+        this._do();
     }
 
     _do = async () => {
@@ -130,4 +129,4 @@ const styles = {
     },
 }
 
-export default connect(mapStateToProps, null)(withNotificationService(HomeScreen));
+export default withNotificationService(HomeScreen);
