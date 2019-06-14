@@ -10,13 +10,11 @@ const messagesReducer = (state = initState, action) => {
             return Object.assign({}, state, { messages: [...state.messages, action.payload] });
         }
         case actiontype.MESSAGE.READED: {
-            const modified = state.messages.map((item, index) => {
-                if (index == action.payload) {
-                    item.unRead = false
-                };
-            })
-            console.log(">>>>>>>>>>>>>>",modified);
-            return Object.assign({}, state);
+            const modified = state.messages.map((item, index) => (index == action.payload) ?
+                Object.assign({ ...item, unRead: false }) :
+                item
+            )
+            return Object.assign({}, state, { messages: modified });
         }
         default: return state;
     }
