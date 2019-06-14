@@ -1,10 +1,10 @@
-export default class NotificationManager {
 
-    onBackgroundNotificationRecevied = (action, notification) => {
-        console.log('onBackgroundNotificationRecevied >>>> Backgroud:', action, notification);
+export default class NotificationManager {
+    onForegroundNotificationRecevied = (action, notification) => {
+        action({ ...notification, unRead: true });        
     }
 
-    onForegroundNotificationRecevied = (notification) => {
-        console.log('onForegroundNotificationRecevied >>>> Foreground:', notification);
+    onBackgroundNotificationRecevied = (action, notification) => {
+        action(notification);
     }
 }

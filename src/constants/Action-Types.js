@@ -1,0 +1,4 @@
+export const MESSAGE = {
+    RECIEVED: 'MESSAGE_RECIEVED',
+    READED:'MESSAGE_READED'
+}

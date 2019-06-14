@@ -1,10 +1,21 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Button, View, Text } from "react-native";
-import { withNotificationService } from "../services/Notification-Service";
+import { withNotificationService } from "../../services/Notification-Service";
+import Count from "./Count";
 
 class HomeScreen extends React.Component {
 
-    static navigationOptions = () => ({ title: 'Home' });
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Home',
+            headerRight:
+                <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                    <Count />
+                    <Button title="Inbox" style={styles.inbox} onPress={() => navigation.navigate('InboxScreen')} />
+                </View>
+        }
+    };
 
     state = {
         title: 'This a local notification',
@@ -12,12 +23,16 @@ class HomeScreen extends React.Component {
         data: {
             key1: 'value1',
             key2: 'value2',
-        }
+        },        
     }
 
     componentDidMount() {
+        this._do();        
+    }
+
+    _do = async () => {
         const { notificationContext } = this.props;
-        notificationContext.subscribe(this._onNotificationReceived);
+        await notificationContext.subscribe(this._onNotificationReceived);
     }
 
     componentWillUnmount() {
@@ -109,7 +124,10 @@ const styles = {
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'gray'
-    }
+    },
+    inbox: {
+        marginRight: 20
+    },
 }
 
-export default withNotificationService(HomeScreen);
+export default connect(mapStateToProps, null)(withNotificationService(HomeScreen));

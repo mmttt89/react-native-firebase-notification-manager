@@ -1,7 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import firebase from 'react-native-firebase';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import uuidv4 from "uuid/v4";
+import { putMessageIntoInbox } from "@Actions/Messages";
 import NotificationManager from "./Notification-Manager";
 
 const ReactContext = React.createContext();
@@ -68,7 +70,7 @@ class NotificationServiceProvider extends React.Component {
                         data: receivecNotification.data
                     }
                     this.listeners.map(listener => listener(notification));
-                    this._notificationManager.onForegroundNotificationRecevied(notification);
+                    this._notificationManager.onForegroundNotificationRecevied(this.props.putMessageIntoInbox, notification);
                 });
 
         /***************
@@ -95,7 +97,7 @@ class NotificationServiceProvider extends React.Component {
 
     listeners = [];
     _subscribe = (listener) => {
-        this.listeners.push(listener);
+        this.listeners.push(listener);        
     }
 
     _unsubscribe = (listener) => {
@@ -164,4 +166,8 @@ export const withNotificationService = (WrappedComponent) => {
     return hoistNonReactStatic(HOC, WrappedComponent);
 }
 
-export default NotificationServiceProvider;
+const mapStateToProps = ({ messages }) => ({
+    messages: messages.messages
+})
+
+export default connect(mapStateToProps, { putMessageIntoInbox })(NotificationServiceProvider);

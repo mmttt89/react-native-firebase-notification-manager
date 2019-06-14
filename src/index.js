@@ -1,13 +1,15 @@
 import React from "react";
 import { createAppContainer, createSwitchNavigator, createStackNavigator } from 'react-navigation';
-import HomeScreen from "./screens/Home-Screen";
-import UserScreen from "./screens/User-Screen";
-import SplashScreen from "./screens/Splash-Screen";
+import HomeScreen from "@Screens/home/Home-Screen";
+import UserScreen from "@Screens/user/User-Screen";
+import InboxScreen from "@Screens/inbox/Inbox-Screen";
+import SplashScreen from "@Screens/splash/Splash-Screen";
 
 const AppNavigator = createStackNavigator(
     {
         HomeScreen,
-        UserScreen
+        UserScreen,
+        InboxScreen
     });
 
 const FlowNavigator = createSwitchNavigator(

@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, View } from "react-native";
-import NotificationServiceProvider from "../services/Notification-Service";
+import NotificationServiceProvider from "../../services/Notification-Service";
 
-export default class UserScreen extends React.Component {
+class UserScreen extends React.Component {
 
     static navigationOptions = () => ({ title: 'Users' });
     static contextType = NotificationServiceProvider.Context;
@@ -15,7 +15,7 @@ export default class UserScreen extends React.Component {
             key4: 'value4',
         }
     }
-
+    
     _displayLocalNotification = () => {
         const { title, body, data } = this.state;
         this.context.displayLocalNotification({ title, body, data });
@@ -24,11 +24,12 @@ export default class UserScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Button title="Show a local notification" onPress={this._displayLocalNotification} />
+                <Button title="Show a local notification" onPress={this._displayLocalNotification} />                
             </View>
         );
     }
 }
+export default UserScreen;
 
 const styles = {
     container: {
@@ -36,5 +37,5 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         padding: 15
-    }
+    }    
 }
