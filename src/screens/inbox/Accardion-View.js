@@ -21,9 +21,7 @@ class AccordionView extends React.Component {
     _renderContent = section => {
         return (
             <View style={styles.inboxQueryContent}>
-
                 <Text>{section.body}</Text>
-
                 {
                     section.data.image ?
                         <Image style={{ width: 75, height: 75 }}

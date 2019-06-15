@@ -56,10 +56,10 @@ class NotificationServiceProvider extends React.Component {
         this.onNotificationListener();
     }
 
-    createNotificationListeners = async () => {
+    createNotificationListeners = async () => {        
         /***************
          * When the application is on foreground this will be called
-         */
+         */        
         this.onNotificationListener =
             firebase
                 .notifications()
@@ -70,8 +70,8 @@ class NotificationServiceProvider extends React.Component {
                         data: receivecNotification.data
                     }
                     this.listeners.map(listener => {
-                        listener(notification);
-                        this._localNotification(notification);
+                        listener(notification)
+                        this._foregroundNotification(notification);
                     })
                     this._notificationManager.onForegroundNotificationRecevied(this.props.putMessageIntoInbox, notification);
                 });
@@ -87,7 +87,7 @@ class NotificationServiceProvider extends React.Component {
         // App was opened by a notification        
         if (notificationOpen) {
             // Get the action triggered by the notification being opened
-            const action = notificationOpen.action;
+            const action = notificationOpen.action;            
             // Get information about the notification that was opened
             const notification = {
                 title: notificationOpen.notification.data.title,
@@ -105,6 +105,28 @@ class NotificationServiceProvider extends React.Component {
 
     _unsubscribe = (listener) => {
         this.listeners = this.listeners.filter(l => l != listener);
+    }
+
+    _foregroundNotification = ({ title, body, data }) => {
+        const REMOTE_CHANNEL_ID = "remote-channel-id";
+        const channel = new firebase.notifications
+            .Android
+            .Channel(REMOTE_CHANNEL_ID, 'remote notifications', firebase.notifications.Android.Importance.Max)
+            .setDescription('remote app notifications');
+
+        // Create the channel
+        firebase.notifications().android.createChannel(channel);
+
+        const notification = new firebase.notifications.Notification()
+            .setNotificationId(uuidv4())
+            .setTitle(title || 'My App')
+            .setBody(body)
+            .setData(data);
+
+        notification
+            .android.setChannelId(REMOTE_CHANNEL_ID)
+            .android.setSmallIcon('ic_launcher');
+        firebase.notifications().displayNotification(notification);
     }
 
     _localNotification = ({ title, body, data }) => {

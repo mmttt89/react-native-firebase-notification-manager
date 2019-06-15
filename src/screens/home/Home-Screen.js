@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, View, Text } from "react-native";
-import { withNotificationService } from "../../services/Notification-Service";
+import { Button, View, Text, TouchableOpacity, Image } from "react-native";
+import { withNotificationService } from "@Services/Notification-Service";
+import InboxIcon from "@Assets/icons/inbox";
 import Count from "./Count";
 
 class HomeScreen extends React.Component {
@@ -9,9 +10,11 @@ class HomeScreen extends React.Component {
         return {
             title: 'Home',
             headerRight:
-                <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                <View style={styles.inboxButton}>
                     <Count />
-                    <Button title="Inbox" style={styles.inbox} onPress={() => navigation.navigate('InboxScreen')} />
+                    <TouchableOpacity onPress={() => navigation.navigate('InboxScreen')} >
+                        <InboxIcon />
+                    </TouchableOpacity>
                 </View>
         }
     };
@@ -71,23 +74,25 @@ class HomeScreen extends React.Component {
 const Layout = ({ fcmToken, notification, showLocalNotifcation, gotoUserScreen }) =>
     <View style={styles.container}>
         <View style={styles.topConatiner} >
-            <Text>Welcome to React Native Notification Test!</Text>
+            <Text style={styles.textHeader}>Welcome to React Native Notification Test!</Text>
             <Text>
-                FCM Token is
+                Device FCM Token is :
             </Text>
             <Text>{fcmToken}</Text>
         </View>
-        <View style={styles.notifcationConatiner} >
-            {
-                notification ?
-                    <NotificationLayout notification={notification} />
-                    : <Text>No notification received</Text>
-            }
-
-        </View>
-        <View style={styles.buttonsContainer}>
-            <Button title="Show a local notification" onPress={showLocalNotifcation} />
-            <Button title="Go to User Screen" onPress={gotoUserScreen} />
+        <View style={styles.bottomContainer} >
+            <Text style={styles.textHeader}>Notification Data in JSON:</Text>
+            <View style={styles.notifcationConatiner}>
+                {
+                    notification ?
+                        <NotificationLayout notification={notification} />
+                        : <Text>No notification received</Text>
+                }
+            </View>
+            <View style={styles.buttonsContainer}>
+                <Button title="Show a local notification" onPress={showLocalNotifcation} />
+                <Button title="Go to User Screen" onPress={gotoUserScreen} />
+            </View>
         </View>
     </View>
 
@@ -106,27 +111,39 @@ const styles = {
         padding: 15
     },
     topConatiner: {
+        alignItems: 'center',
+        marginVertical: 20
+    },
+    textHeader: {
+        fontSize: 18,
+        color: '#000'
+    },
+    bottomContainer: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'flex-start',
+        backgroundColor: '#dbdbdb',
+        paddingHorizontal: 20,
+        paddingVertical: 10
+    },    
+    notifcationConatiner: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    notifcationConatiner: {
-        width: '100%',
-        height: '20%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'green'
+        backgroundColor: '#b7b7b7'
     },
     buttonsContainer: {
         width: '100%',
         height: '30%',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: 'gray'
     },
-    inbox: {
+    inboxButton: {
+        flexDirection: "row",
+        alignItems: 'center',
         marginRight: 20
     },
+
 }
 
 export default withNotificationService(HomeScreen);

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, View } from "react-native";
-import NotificationServiceProvider from "../../services/Notification-Service";
+import NotificationServiceProvider from "@Services/Notification-Service";
 
 class UserScreen extends React.Component {
 

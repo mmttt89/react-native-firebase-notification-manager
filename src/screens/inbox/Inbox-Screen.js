@@ -33,12 +33,7 @@ const styles = {
     myInbox: {
         flex: 1,
         width: '100%',
-        padding: 10
-    },
-    itemView: {
-        width: '100%',
-        backgroundColor: "#ededed",
-        padding: 10,        
-        borderRadius: 5,        
-    },
+        padding: 10,
+        marginBottom: 50
+    },    
 }
