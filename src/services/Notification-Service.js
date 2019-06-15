@@ -69,7 +69,10 @@ class NotificationServiceProvider extends React.Component {
                         body: receivecNotification.body,
                         data: receivecNotification.data
                     }
-                    this.listeners.map(listener => listener(notification));                    
+                    this.listeners.map(listener => {
+                        listener(notification);
+                        this._localNotification(notification);
+                    })
                     this._notificationManager.onForegroundNotificationRecevied(this.props.putMessageIntoInbox, notification);
                 });
 
