@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { View, ScrollView } from "react-native";
 import AccordionView from "./Accardion-View";
 
 class InboxScreen extends React.Component {
@@ -9,9 +9,9 @@ class InboxScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.myInbox}>
+                <ScrollView style={styles.myInbox}>
                     <AccordionView messages={this.props.messages} />
-                </View>
+                </ScrollView>
             </View>
         );
     }
@@ -38,9 +38,7 @@ const styles = {
     itemView: {
         width: '100%',
         backgroundColor: "#ededed",
-        padding: 10,
-        borderBottomWidth: 1,
-        borderRadius: 5,
-        borderColor: 'black'
+        padding: 10,        
+        borderRadius: 5,        
     },
 }

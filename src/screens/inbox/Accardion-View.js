@@ -20,7 +20,7 @@ class AccordionView extends React.Component {
 
     _renderContent = section => {
         return (
-            <View style={styles.inboxQueryBody}>
+            <View style={styles.inboxQueryContent}>
 
                 <Text>{section.body}</Text>
 
@@ -38,7 +38,7 @@ class AccordionView extends React.Component {
         let index = activeSections[0];
         if (index != undefined) {
             this.props.messageReaded(index)
-        }        
+        }
     };
 
     render() {
@@ -69,18 +69,19 @@ const styles = {
         width: '100%',
         backgroundColor: "#ededed",
         padding: 10,
-        borderTopWidth: 1,
-        borderColor: 'black'
+        marginBottom: 2,
+        borderRadius: 5
     },
     headerText: {
-        fontSize: 18,
+        fontSize: 14,
     },
     headerStatus: {
         fontSize: 13,
         color: 'red'
     },
-    inboxQueryBody: {
+    inboxQueryContent: {
         backgroundColor: "#fff",
-        minHeight: 50
+        minHeight: 50,
+        padding: 10,
     },
 }

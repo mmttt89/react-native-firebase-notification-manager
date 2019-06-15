@@ -69,7 +69,7 @@ class NotificationServiceProvider extends React.Component {
                         body: receivecNotification.body,
                         data: receivecNotification.data
                     }
-                    this.listeners.map(listener => listener(notification));
+                    this.listeners.map(listener => listener(notification));                    
                     this._notificationManager.onForegroundNotificationRecevied(this.props.putMessageIntoInbox, notification);
                 });
 
@@ -81,23 +81,23 @@ class NotificationServiceProvider extends React.Component {
                 .notifications()
                 .getInitialNotification();
 
-        // App was opened by a notification
+        // App was opened by a notification        
         if (notificationOpen) {
             // Get the action triggered by the notification being opened
             const action = notificationOpen.action;
             // Get information about the notification that was opened
             const notification = {
-                title: 'no title, it is background !!!',
-                body: 'no body, it is background !!!',
+                title: notificationOpen.notification.data.title,
+                body: notificationOpen.notification.data.body,
                 data: notificationOpen.notification.data
             };
-            this._notificationManager.onBackgroundNotificationRecevied(action, notification);
+            this._notificationManager.onBackgroundNotificationRecevied(this.props.putMessageIntoInbox, notification);
         }
     }
 
     listeners = [];
     _subscribe = (listener) => {
-        this.listeners.push(listener);        
+        this.listeners.push(listener);
     }
 
     _unsubscribe = (listener) => {
