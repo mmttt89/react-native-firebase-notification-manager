@@ -4,6 +4,7 @@ import HomeScreen from "@Screens/home/Home-Screen";
 import UserScreen from "@Screens/user/User-Screen";
 import InboxScreen from "@Screens/inbox/Inbox-Screen";
 import SplashScreen from "@Screens/splash/Splash-Screen";
+import NavigationService from "./services/Navigation-Service";
 
 const AppNavigator = createStackNavigator(
     {
@@ -24,7 +25,9 @@ const AppContainer = createAppContainer(FlowNavigator);
 
 export default class Root extends React.Component {
     render() {
-        return <AppContainer />;
+        return <AppContainer ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+        }} />;
     }
 }
 

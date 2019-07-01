@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import firebase from 'react-native-firebase';
 import hoistNonReactStatic from 'hoist-non-react-statics';
+import NavigationService from './Navigation-Service';
 import uuidv4 from "uuid/v4";
 import { putMessageIntoInbox } from "@Actions/Messages";
 import NotificationManager from "./Notification-Manager";
@@ -48,7 +49,7 @@ class NotificationServiceProvider extends React.Component {
     }
 
     async componentDidMount() {
-        this.checkPermission();
+        await this.checkPermission();
         this.createNotificationListeners();
     }
 
@@ -56,10 +57,10 @@ class NotificationServiceProvider extends React.Component {
         this.onNotificationListener();
     }
 
-    createNotificationListeners = async () => {        
+    createNotificationListeners = async () => {
         /***************
          * When the application is on foreground this will be called
-         */        
+         */
         this.onNotificationListener =
             firebase
                 .notifications()
@@ -76,9 +77,7 @@ class NotificationServiceProvider extends React.Component {
                     this._notificationManager.onForegroundNotificationRecevied(this.props.putMessageIntoInbox, notification);
                 });
 
-        /***************
-         * When the application is in background this will be called
-         */
+        /* When the application is in background this will be called*/
         const notificationOpen =
             await firebase
                 .notifications()
@@ -86,8 +85,8 @@ class NotificationServiceProvider extends React.Component {
 
         // App was opened by a notification        
         if (notificationOpen) {
-            // Get the action triggered by the notification being opened
-            const action = notificationOpen.action;            
+            console.log("LLLLLLLLLLLLLLL", notificationOpen);
+            // Get the action triggered by the notification being opened            
             // Get information about the notification that was opened
             const notification = {
                 title: notificationOpen.notification.data.title,
@@ -123,10 +122,23 @@ class NotificationServiceProvider extends React.Component {
             .setBody(body)
             .setData(data);
 
+        /*    
+        //add a custom action to  notification
+        const androidAction = new firebase.notifications.Android.Action('test_action', "ic_launcher", "Test");
+        //make a input and allocate it to the action 
+        const remoteInput = new firebase.notifications.Android.RemoteInput('inputText').setLabel('Message');
+        androidAction.addRemoteInput(remoteInput);
+        */
+
         notification
             .android.setChannelId(REMOTE_CHANNEL_ID)
-            .android.setSmallIcon('ic_launcher');
+            .android.setSmallIcon('ic_launcher')
+            .android.setAutoCancel(true)
+            .android.setLargeIcon(notification.data.image)
+            .android.setBigPicture(notification.data.image)
+
         firebase.notifications().displayNotification(notification);
+        firebase.notifications().onNotificationOpened(() => NavigationService.navigate('InboxScreen'));
     }
 
     _localNotification = ({ title, body, data }) => {
